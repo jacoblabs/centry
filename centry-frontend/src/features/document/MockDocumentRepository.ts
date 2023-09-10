@@ -7,9 +7,9 @@ export class MockDocumentRepository implements IDocumentRepository {
         let data: Document[] = []
 
         if (page == 1) {
-            data = (mockData as unknown as Document[]).slice(0, 5);
+            data = (mockData as unknown as Document[]).slice(0, 10);
         } else {
-            data = (mockData as unknown as Document[]).slice(5, 10);
+            data = (mockData as unknown as Document[]).slice(10, 20);
         }
 
         return data

@@ -9,7 +9,7 @@
     },
     {
         "id": 2,
-        "title": "나의 사이드 프로젝트를 위한 기술 스택 2023",
+        "title": "리액트 프로젝트 테스트",
         "content": "Frontend: Typescript, Next.js, React, TailwindCSS, Zustand (state management), react-query, Cloudflare Pages (static sites), Google Cloud Run (for servers)\nBackend: Node.js, Express (swap for Fastify if performance needed), ts-rest, TypeORM, knex, PostgreSQL, Redis, Google Cloud Run (servers), Digital Ocean (VPS servers, managed Postgres), Google Cloud Storage\nTooling: pnpm workspaces (monorepo), GitHub Actions (CI/CD)",
         "origin": "GeekNews",
         "topic": "IT",
