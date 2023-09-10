@@ -1,9 +1,7 @@
 {
-  "eslint.codeActionsOnSave": {
-    "source.fixAll": true
-  },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.autoSave": "afterDelay",
-  "files.autoSaveDelay": 1000
+  "files.autoSaveDelay": 1000,
+  "eslint.codeActionsOnSave.mode": "all"
 }
