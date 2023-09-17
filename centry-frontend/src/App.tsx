@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import Home from './Home'
+import HomePage from './HomePage'
+import ViewPage from './ViewPage'
 import {
   IDocumentService,
   IDocumentRepository,
@@ -13,7 +14,7 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-
+import { Document } from '../types/document';
 
 function App() {
   // State
@@ -46,7 +47,14 @@ function App() {
       path: "/",
       element: <>
       <HomeNav />
-      <Home documents={documents} />
+      <HomePage documents={documents} />
+    </>,
+    },
+    {
+      path: "/:id",
+      element: <>
+      <HomeNav />
+      <ViewPage documentService={documentService} />
     </>,
     },
   ]);

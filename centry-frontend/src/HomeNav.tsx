@@ -20,7 +20,6 @@ function HomeNav() {
   }
 
   const handleClick = () => {
-    console.log(1234)
     if(keyword){
     navigate({
       pathname: "/",
@@ -33,7 +32,7 @@ function HomeNav() {
   }
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="light" expand="lg" fixed="top">
       <Container>
         <Navbar.Brand href="/">
           <img

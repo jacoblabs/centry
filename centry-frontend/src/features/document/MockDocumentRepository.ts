@@ -1,8 +1,8 @@
 import { IDocumentRepository } from './types';
 import mockData from './mockdata.json';
+import { Document } from '../../../types/document';
 
 export class MockDocumentRepository implements IDocumentRepository {
-
     async getDocumentList({ page = 1 }) {
         let data: Document[] = []
 
@@ -13,5 +13,10 @@ export class MockDocumentRepository implements IDocumentRepository {
         }
 
         return data
+    }
+
+    async getDocumentById(id: number) {
+        return (mockData as unknown as Document[])
+            .filter(doc => doc.id === id)[0] ?? null
     }
 }

@@ -4,17 +4,31 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Image from 'react-bootstrap/Image'
 import Button from 'react-bootstrap/Button'
-import { Component } from 'react'
+import { Component, useCallback } from 'react'
 import Nav from 'react-bootstrap/Nav'
 import { ListGroup } from 'react-bootstrap'
+import dayjs from 'dayjs'
 
 interface Props {
   documents?: Document[]
 }
 
 export default function (props: Props) {
+  const formatDate = (timestamp: number) => {
+    const dayDiff = dayjs().diff(timestamp, 'day')
+    if (dayDiff > 0) {
+      return `${dayDiff}일 전`
+    }
+    
+    const hourDiff = dayjs().diff(timestamp, 'hour')
+    if(hourDiff > 0) {
+      return `${hourDiff}시간 전`
+    }
+    return '조금전'
+  }
+
   return (
-    <Container>
+    <Container style={{ marginTop: '72px' }}>
       <ListGroup as="ol" className="mt-3 mb-5">
         {props.documents?.map((document) => (
           <ListGroup.Item
@@ -24,7 +38,8 @@ export default function (props: Props) {
             <div className="ms-2 me-auto d-flex flex-column">
               <div className="d-flex">
                 <div className="fw-bold flex-grow-1">{document.title}</div>
-                <div>{new Date(document.createdAt ?? 0).toString()}</div>
+                <div>{formatDate(document.createdAt ?? 0)}
+                </div>
               </div>
               <div
                 style={{

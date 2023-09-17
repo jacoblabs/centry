@@ -1,3 +1,4 @@
+import { Document } from '../../../types/document';
 import { IDocumentService, IDocumentRepository } from './types'
 
 interface ConstructorProps {
@@ -13,5 +14,9 @@ export class DocumentService implements IDocumentService {
 
     async getDocumentList({ page = 0 }) {
         return this.documentRepository.getDocumentList({ page })
+    }
+
+    async getDocument({ id }: { id: number; }) {
+        return this.documentRepository.getDocumentById(id)
     }
 }
