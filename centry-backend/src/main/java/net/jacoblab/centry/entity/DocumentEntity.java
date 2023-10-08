@@ -18,4 +18,8 @@ public class DocumentEntity {
     String origin;
     String topic;
     Long createdAt;
+
+    public net.jacoblab.centry.entity.Document toModel(){
+        return new net.jacoblab.centry.entity.Document(0L,this.title,this.content,this.origin,this.topic,this.createdAt);
+    }
 }
