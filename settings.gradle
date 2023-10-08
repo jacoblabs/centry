@@ -1,0 +1,3 @@
+rootProject.name = 'centry'
+
+include 'centry-backend'
