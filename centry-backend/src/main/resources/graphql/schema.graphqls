@@ -1,0 +1,14 @@
+type Query {
+    hello: String
+    findById(id: ID): Document
+    findAll : [Document]
+}
+
+type Document {
+ id : ID
+    title: String
+    content: String
+    origin: String
+    topic: String
+    createdAt: Int
+}
