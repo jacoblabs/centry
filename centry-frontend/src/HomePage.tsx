@@ -6,14 +6,14 @@ import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
 import { useQuery } from '@apollo/client'
 import {
-  DocumentData,
-  GET_DOCUMENT,
+  DocumentListData,
+  GET_DOCUMENT_LIST,
 } from './features/document/GraphQlDocumentRepository'
 
 const HomePage = () => {
   const navigate = useNavigate()
   const [aborterRef] = useState(new AbortController())
-  const { data } = useQuery<DocumentData>(GET_DOCUMENT, {
+  const { data } = useQuery<DocumentListData>(GET_DOCUMENT_LIST, {
     fetchPolicy: 'network-only',
     context: {
       fetchOptions: {
@@ -21,7 +21,6 @@ const HomePage = () => {
       },
     },
     notifyOnNetworkStatusChange: true,
-    partialRefetch: false,
   })
   const documents = useMemo(() => data?.findAll || [], [data])
 
@@ -52,6 +51,7 @@ const HomePage = () => {
             className="d-flex justify-content-between align-items-start"
             style={{ cursor: 'pointer' }}
             onClick={() => handleDocumentClick(document)}
+            key={document.id}
           >
             <div className="ms-2 me-auto d-flex flex-column">
               <div className="d-flex">

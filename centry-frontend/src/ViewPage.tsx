@@ -1,36 +1,27 @@
-import { useNavigation, useParams, useRoutes } from 'react-router-dom'
-import { IDocumentService } from './features/document/types'
-import { Document } from '../types/document'
-import { Button, Card, Container } from 'react-bootstrap'
-import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { Card, Container } from 'react-bootstrap'
+import { useMemo, useState } from 'react'
 import dayjs from 'dayjs'
+import { DocumentData, DocumentVars, GET_DOCUMENT } from './features/document/GraphQlDocumentRepository'
+import { useQuery } from '@apollo/client'
 
-interface Props {
-  documentService: IDocumentService
-}
-
-const ViewPage = ({ documentService }: Props) => {
+const ViewPage = () => {
   const { id } = useParams()
-  console.log(id)
-  const idNum = parseInt(id ?? '0')
-  const [doc, setDoc] = useState<Document | null>(null)
-
-  // const doc = documentService.getDocument({ id: idNum })
-  const pageNotFoundMessage = '문서를 찾을 수 없습니다.'
-  const failedToLoadDocument = '문서를 불러오는 도중 오류가 발생하였습니다.'
+  const [aborterRef] = useState(new AbortController())
+  const { data } = useQuery<DocumentData, DocumentVars>(GET_DOCUMENT, {
+    variables: {
+      id: parseInt(id as string)
+    },
+    fetchPolicy: 'network-only',
+    context: {
+      fetchOptions: {
+        signal: aborterRef.signal,
+      },
+    },
+    notifyOnNetworkStatusChange: true,
+  })
+  const doc = useMemo(() => data?.findById || {}, [data])
   const date = dayjs(doc?.createdAt ?? 0).format('YYYY/MM/DD h:mm:ss')
-
-  useEffect(() => {
-    const func = async () => {
-      try {
-        const doc = await documentService.getDocument({ id: idNum })
-        setDoc(doc)
-      } catch (e) {
-        alert(failedToLoadDocument)
-      }
-    }
-    func()
-  }, [])
 
   return (
     <Container style={{ marginTop: '72px' }}>
