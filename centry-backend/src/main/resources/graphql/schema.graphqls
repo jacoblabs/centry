@@ -1,6 +1,7 @@
 type Query {
     hello: String
-    findById(id: ID): Document
+    findById(id: Int): Document
+    findByTitle(title: String): Document
     findAll : [Document]
 }
 

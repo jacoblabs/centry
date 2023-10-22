@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @ToString
 @Document(collection = "documents")
 public class DocumentEntity {
+
     @Id
     String _id;
     Long id;
