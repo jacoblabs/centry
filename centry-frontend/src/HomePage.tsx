@@ -1,21 +1,29 @@
 import { Document } from '../types/document'
 import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Image from 'react-bootstrap/Image'
-import Button from 'react-bootstrap/Button'
-import { Component, useCallback } from 'react'
-import Nav from 'react-bootstrap/Nav'
+import { useMemo, useState } from 'react'
 import { ListGroup } from 'react-bootstrap'
 import dayjs from 'dayjs'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@apollo/client'
+import {
+  DocumentData,
+  GET_DOCUMENT,
+} from './features/document/GraphQlDocumentRepository'
 
-interface Props {
-  documents?: Document[]
-}
-
-export default function (props: Props) {
+const HomePage = () => {
   const navigate = useNavigate()
+  const [aborterRef] = useState(new AbortController())
+  const { data } = useQuery<DocumentData>(GET_DOCUMENT, {
+    fetchPolicy: 'network-only',
+    context: {
+      fetchOptions: {
+        signal: aborterRef.signal,
+      },
+    },
+    notifyOnNetworkStatusChange: true,
+    partialRefetch: false,
+  })
+  const documents = useMemo(() => data?.findAll || [], [data])
 
   const formatDate = (timestamp: number) => {
     const dayDiff = dayjs().diff(timestamp, 'day')
@@ -37,12 +45,12 @@ export default function (props: Props) {
   return (
     <Container style={{ marginTop: '72px' }}>
       <ListGroup as="ol" className="mt-3 mb-5">
-        {props.documents?.map((document) => (
+        {documents?.map((document) => (
           <ListGroup.Item
             action
             as="li"
             className="d-flex justify-content-between align-items-start"
-            style={{cursor: 'pointer'}}
+            style={{ cursor: 'pointer' }}
             onClick={() => handleDocumentClick(document)}
           >
             <div className="ms-2 me-auto d-flex flex-column">
@@ -66,3 +74,5 @@ export default function (props: Props) {
     </Container>
   )
 }
+
+export default HomePage

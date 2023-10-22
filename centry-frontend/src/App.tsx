@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useMemo } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import HomePage from './HomePage'
@@ -10,60 +10,50 @@ import {
 import { DocumentService } from './features/document/DocumentService'
 import { MockDocumentRepository } from './features/document/MockDocumentRepository'
 import HomeNav from './HomeNav'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import { Document } from '../types/document';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client'
 
 function App() {
-  // State
-  const [documents, setDocuments] = useState<Document[]>([])
-
   // DI
   const documentRepository: IDocumentRepository = new MockDocumentRepository()
   const documentService: IDocumentService = new DocumentService({
     documentRepository,
   })
 
-  // Hooks: mounted
-  useEffect(() => {
-    const init = async () => {
-      try {
-        const fetchedDocuments = await documentService.getDocumentList({
-          page: 1,
-        })
-        setDocuments(fetchedDocuments)
-      } catch (e) {
-        console.error(e)
-      }
-    }
-
-    init()
-  }, [])
+  // React query
+  const apolloClient = useMemo(() => new ApolloClient({
+    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+    cache: new InMemoryCache(),
+  }), [])
 
   const router = createBrowserRouter([
     {
-      path: "/",
-      element: <>
-      <HomeNav />
-      <HomePage documents={documents} />
-    </>,
+      path: '/',
+      element: (
+        <>
+          <HomeNav />
+          <HomePage />
+        </>
+      ),
     },
     {
-      path: "/:id",
-      element: <>
-      <HomeNav />
-      <ViewPage documentService={documentService} />
-    </>,
+      path: '/:id',
+      element: (
+        <>
+          <HomeNav />
+          <ViewPage documentService={documentService} />
+        </>
+      ),
     },
-  ]);
-  
+  ])
+
   // UI
   return (
     <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+      <ApolloProvider client={apolloClient}>
+        <RouterProvider router={router} />
+      </ApolloProvider>
+    </React.StrictMode>
   )
 }
 

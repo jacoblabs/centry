@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class DocumentEntity {
     @Id
     String _id;
+    Long id;
     String title;
     String content;
     String origin;
@@ -20,6 +21,6 @@ public class DocumentEntity {
     Long createdAt;
 
     public net.jacoblab.centry.entity.Document toModel(){
-        return new net.jacoblab.centry.entity.Document(0L,this.title,this.content,this.origin,this.topic,this.createdAt);
+        return new net.jacoblab.centry.entity.Document(id,this.title,this.content,this.origin,this.topic,this.createdAt);
     }
 }

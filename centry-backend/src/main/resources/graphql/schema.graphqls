@@ -5,10 +5,10 @@ type Query {
 }
 
 type Document {
- id : ID
+    id : Float
     title: String
     content: String
     origin: String
     topic: String
-    createdAt: Int
+    createdAt: Float
 }
